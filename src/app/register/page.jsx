@@ -6,6 +6,13 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 import apiEndpoints from "@/services/apiEndpoints";
+import ErrorMessage from "@/components/Error/ErrorMessage";
+import Link from "next/link";
+import { BiSolidDownArrow } from "react-icons/bi";
+import { FaCalendarDays, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { TbCloudUpload } from "react-icons/tb";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Register() {
   const router = useRouter();
@@ -22,6 +29,8 @@ export default function Register() {
     confirm_password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -29,6 +38,21 @@ export default function Register() {
       ...formData,
       [name]: files ? files[0] : value,
     });
+  };
+
+  const handleDateChange = (date) => {
+    setFormData({
+      ...formData,
+      date_of_birth: date,
+    });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -40,7 +64,6 @@ export default function Register() {
       setErrorMessage(
         "Password harus minimal 8 karakter, mengandung huruf kapital, huruf kecil, dan angka."
       );
-
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
@@ -53,7 +76,6 @@ export default function Register() {
       setErrorMessage(
         "K. Password harus minimal 8 karakter, mengandung huruf kapital, huruf kecil, dan angka."
       );
-
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
@@ -188,7 +210,7 @@ export default function Register() {
           </div>
 
           {/* Gender */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 relative">
             <label htmlFor="gender" className="text-sm font-bold">
               Jenis Kelamin
             </label>
@@ -198,7 +220,7 @@ export default function Register() {
               required
               value={formData.gender}
               onChange={handleChange}
-              className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm"
+              className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm appearance-none"
             >
               <option value="" disabled hidden>
                 Pilih Jenis Kelamin
@@ -206,22 +228,34 @@ export default function Register() {
               <option value="male">Laki-laki</option>
               <option value="female">Perempuan</option>
             </select>
+            <BiSolidDownArrow className="absolute right-3 top-[47px] text-[#FD5725] text-[16px] z-[-1]" />
           </div>
 
           {/* Date of Birth */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 relative">
             <label htmlFor="date_of_birth" className="text-sm font-bold">
               Tanggal Lahir
             </label>
-            <input
-              type="date"
-              id="date_of_birth"
-              name="date_of_birth"
-              required
-              value={formData.date_of_birth}
-              onChange={handleChange}
-              className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm"
+            <ReactDatePicker
+              selected={formData.date_of_birth}
+              onChange={handleDateChange}
+              dateFormat="dd/MM/yyyy"
+              showYearDropdown
+              scrollableYearDropdown
+              yearDropdownItemNumber={100}
+              placeholderText="Pilih Tanggal Lahir"
+              className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm w-full"
             />
+            <div
+              className="absolute right-3 top-[47px] text-[#FD5725] text-[16px] cursor-pointer"
+              onClick={() =>
+                document
+                  .querySelector(".react-datepicker__input-container input")
+                  .focus()
+              }
+            >
+              <FaCalendarDays />
+            </div>
           </div>
 
           {/* Email */}
@@ -276,12 +310,12 @@ export default function Register() {
           </div>
 
           {/* Password */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 relative">
             <label htmlFor="password" className="text-sm font-bold">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               required
@@ -290,15 +324,25 @@ export default function Register() {
               placeholder="Masukkan Password"
               className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm"
             />
+            <div
+              className="absolute right-3 top-[45px] cursor-pointer"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <FaRegEye className="text-[#FD5725] text-[20px]" />
+              ) : (
+                <FaRegEyeSlash className="text-[#FD5725] text-[20px]" />
+              )}
+            </div>
           </div>
 
           {/* Confirm Password */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 relative">
             <label htmlFor="confirm_password" className="text-sm font-bold">
               Konfirmasi Password
             </label>
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               id="confirm_password"
               name="confirm_password"
               required
@@ -307,41 +351,67 @@ export default function Register() {
               placeholder="Konfirmasi Password"
               className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm"
             />
+            <div
+              className="absolute right-3 top-[45px] cursor-pointer"
+              onClick={toggleConfirmPasswordVisibility}
+            >
+              {showConfirmPassword ? (
+                <FaRegEye className="text-[#FD5725] text-[20px]" />
+              ) : (
+                <FaRegEyeSlash className="text-[#FD5725] text-[20px]" />
+              )}
+            </div>
           </div>
 
           {/* Profile Picture */}
-          <div className="flex flex-col gap-4 col-span-2">
+          <div className="flex flex-col gap-4 col-span-2 relative">
             <label htmlFor="photo" className="text-sm font-bold">
               Foto Profil
             </label>
-            <input
-              type="file"
-              id="photo"
-              name="photo"
-              accept="image/*"
-              onChange={handleChange}
-              className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm"
-              required
-            />
+            <div className="relative">
+              <label
+                htmlFor="photo"
+                className="border border-[#E0E0E0] rounded-lg px-4 py-2 text-sm cursor-pointer flex"
+              >
+                {formData.photo ? formData.photo.name : "Choose File"}
+              </label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+                onChange={(e) => {
+                  handleChange(e);
+                }}
+                className="hidden"
+              />
+              <TbCloudUpload className="absolute right-3 top-[9px] text-[#FD5725] text-[20px]" />
+            </div>
           </div>
 
           {/* Submit Button */}
           <div className="col-span-2 flex justify-center">
             <button
               type="submit"
-              className="mt-4 bg-[#2E74B2] text-white rounded-lg px-4 py-2 font-bold text-sm w-full"
+              className="mt-4 bg-[#2E74B2] text-white border-2 border-[#2E74B2] rounded-lg px-4 py-2 font-bold text-sm w-full cursor-pointer hover:bg-white hover:text-[#2E74B2] transition-all duration-150"
             >
               Daftar
             </button>
           </div>
 
           {/* Error Message */}
-          {errorMessage && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg text-center">
-              {errorMessage}
-            </div>
-          )}
+          <ErrorMessage message={errorMessage} />
         </form>
+
+        {/* Login Link */}
+        <div className="text-sm text-center">
+          <Link
+            href="/login"
+            className="text-[#2E74B2] font-semibold hover:underline"
+          >
+            Link Halaman Login Admin
+          </Link>
+        </div>
       </div>
     </main>
   );
