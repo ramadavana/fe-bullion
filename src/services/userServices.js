@@ -1,8 +1,9 @@
+// src/services/userServices.js
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import apiEndpoints from "./apiEndpoints";
 
-export async function getUserList(offset = 0, limit = 100) {
+export async function getUserList(offset = 0, limit = 10) {
   try {
     const token = getCookie("token");
 
@@ -25,7 +26,6 @@ export async function getUserList(offset = 0, limit = 100) {
     console.error("Error fetching user list:", error);
 
     if (error.response) {
-      // Jika respons error dari server (ex: token fail, invalid, access denied)
       return {
         error: true,
         message: error.response.data?.err_message_en || "Something went wrong",
