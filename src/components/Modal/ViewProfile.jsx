@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getUserDetail } from "@/services/userDetailServices";
-import Image from "next/image";
 import { IoIosCloseCircle } from "react-icons/io";
 
 export default function ViewProfile({ userId, onClose }) {
@@ -38,7 +37,7 @@ export default function ViewProfile({ userId, onClose }) {
     <div className="fixed inset-0 flex items-center justify-center">
       <div
         className="flex flex-col bg-white p-8 gap-8 rounded-md shadow-lg max-w-md w-full"
-        onClick={(e) => e.stopPropagation()} // Mencegah penutupan modal ketika konten diklik
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between w-full">
           <h1 className="text-2xl font-bold">Lihat User</h1>

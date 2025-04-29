@@ -64,10 +64,24 @@ export default function Dashboard() {
   return (
     <main className="flex flex-row gap-4 bg-gray-300 w-full">
       <Sidebar />
-      {viewProfile ||
-        (editProfile && (
-          <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
-        ))}
+      {viewProfile && (
+        <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
+      )}
+      {editProfile && (
+        <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
+      )}
+      {editProfile && (
+        <EditProfile
+          user={editProfile} // Pass the user object as a prop
+          onClose={() => setEditProfile(null)} // Close the modal
+        />
+      )}
+      {viewProfile && (
+        <ViewProfile
+          userId={viewProfile._id} // Pass the user ID to ViewProfile
+          onClose={() => setViewProfile(null)} // Close the modal
+        />
+      )}
 
       <div className="flex flex-col gap-4 w-full mr-4">
         <Header />
@@ -160,17 +174,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
-      {viewProfile && (
-        <ViewProfile
-          userId={viewProfile._id}
-          onClose={() => setViewProfile(null)}
-        />
-      )}
-
-      {editProfile && (
-        <EditProfile user={editProfile} onClose={() => setEditProfile(null)} />
-      )}
     </main>
   );
 }
