@@ -54,7 +54,7 @@ export default function ViewProfile({ userId, onClose }) {
               <img
                 src={`data:image/jpeg;base64,${userDetails.photo}`}
                 alt={`${userDetails.first_name} ${userDetails.last_name}`}
-                className="rounded-full w-[150px] h-[150px] object-cover"
+                className="rounded-full w-[112px] h-[112px] object-cover"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -90,7 +90,7 @@ export default function ViewProfile({ userId, onClose }) {
           </div>
         )}
         <div className="w-full">
-          <button className="w-full bg-[#FD5725] text-white py-2 rounded-lg font-bold">
+          <button className="w-full border-2 border-[#FD5725] bg-[#FD5725] text-white py-2 rounded-lg font-bold hover:bg-white hover:text-[#FD5725] cursor-pointer transition-all duration-150">
             Edit
           </button>
         </div>
