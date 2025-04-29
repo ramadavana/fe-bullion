@@ -67,19 +67,19 @@ export default function Dashboard() {
       {viewProfile && (
         <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
       )}
+
       {editProfile && (
         <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
       )}
+
       {editProfile && (
-        <EditProfile
-          user={editProfile} // Pass the user object as a prop
-          onClose={() => setEditProfile(null)} // Close the modal
-        />
+        <EditProfile user={editProfile} onClose={() => setEditProfile(null)} />
       )}
+
       {viewProfile && (
         <ViewProfile
-          userId={viewProfile._id} // Pass the user ID to ViewProfile
-          onClose={() => setViewProfile(null)} // Close the modal
+          userId={viewProfile._id}
+          onClose={() => setViewProfile(null)}
         />
       )}
 
