@@ -6,12 +6,11 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    gender: "male", // Changed to lowercase default
+    gender: "male",
     date_of_birth: "",
     email: "",
     phone: "",
     address: "",
-    photo: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,34 +55,29 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
     setError("");
 
     try {
-      const formDataToSend = new FormData();
+      const payload = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        gender: formData.gender,
+        date_of_birth: new Date(formData.date_of_birth).toISOString(), // sesuai format API
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+      };
 
-      // Append all fields except photo first
-      formDataToSend.append("first_name", formData.first_name);
-      formDataToSend.append("last_name", formData.last_name);
-      formDataToSend.append("gender", formData.gender);
-      formDataToSend.append("date_of_birth", formData.date_of_birth);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("address", formData.address);
-
-      // Append photo if it exists and is a File
-      if (formData.photo instanceof File) {
-        formDataToSend.append("photo", formData.photo);
-      }
-
-      const result = await updateUser(user._id, formDataToSend);
+      const result = await updateUser(user._id, payload);
 
       if (result.error) {
         setError(result.message || "Failed to update user");
       } else {
-        onUpdateSuccess(result.data);
+        onUpdateSuccess(result);
+        alert("Profile updated successfully");
         onClose();
       }
     } catch (err) {
       console.error("Update error:", err);
       setError(
-        err.response?.data?.message ||
+        err.response?.data?.err_message_en ||
           err.message ||
           "An unexpected error occurred"
       );
@@ -201,23 +195,6 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
                 value={formData.address}
                 onChange={handleChange}
                 className="w-full p-2 border border-[#E0E0E0] rounded-md"
-              />
-            </div>
-
-            {/* Profile Photo */}
-            <div className="flex flex-col gap-2">
-              <label className="block font-bold">Profile Photo</label>
-              <input
-                type="file"
-                name="photo"
-                onChange={handleFileChange}
-                accept="image/*"
-                className="file:cursor-pointer block w-full text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-2 file:border-[#FD5725]
-                  file:text-sm file:font-semibold
-                  file:bg-[#FD5725] file:text-white
-                  hover:file:bg-white hover:file:text-[#FD5725] file:transition-all file:duration-150"
               />
             </div>
 

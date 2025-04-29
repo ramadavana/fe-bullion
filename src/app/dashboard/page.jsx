@@ -73,7 +73,14 @@ export default function Dashboard() {
       )}
 
       {editProfile && (
-        <EditProfile user={editProfile} onClose={() => setEditProfile(null)} />
+        <EditProfile
+          user={editProfile}
+          onClose={() => setEditProfile(null)}
+          onUpdateSuccess={() => {
+            fetchUsers(page); // Refresh data
+            setEditProfile(null); // Tutup modal setelah update
+          }}
+        />
       )}
 
       {viewProfile && (

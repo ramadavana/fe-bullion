@@ -14,11 +14,11 @@ export const updateUser = async (id, userData) => {
         },
       }
     );
-    return response.data;
+    return response.data.data;
   } catch (error) {
     return {
       error: true,
-      message: error.response?.data?.message || "An error occurred",
+      message: error.response?.data?.err_message_en || "An error occurred",
     };
   }
 };
