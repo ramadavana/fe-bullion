@@ -37,6 +37,14 @@ export default function Login() {
     e.preventDefault();
     setErrorMessage("");
 
+    if (!formData.email || !formData.password) {
+      setErrorMessage("Email dan Password harus diisi.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+      return;
+    }
+
     try {
       const encryptedPassword = CryptoJS.SHA256(formData.password).toString();
 
@@ -48,6 +56,7 @@ export default function Login() {
       if (response.status === 200) {
         const { token } = response.data.data;
         setCookie("token", token, { path: "/" });
+        alert("Login berhasil.");
         router.push("/dashboard");
       }
     } catch (error) {
