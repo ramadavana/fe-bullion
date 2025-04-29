@@ -4,7 +4,7 @@ import apiEndpoints from "./apiEndpoints";
 
 export const updateUser = async (id, userData) => {
   try {
-    const token = getCookie("token"); // Assuming you store the token in cookies
+    const token = getCookie("token");
     const response = await axios.put(
       apiEndpoints.admin.updateUser(id),
       userData,

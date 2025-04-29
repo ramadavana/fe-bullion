@@ -6,7 +6,7 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    gender: "Male", // Default value set
+    gender: "male", // Changed to lowercase default
     date_of_birth: "",
     email: "",
     phone: "",
@@ -18,11 +18,21 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
 
   useEffect(() => {
     if (user) {
+      const names = user.name ? user.name.split(" ") : [];
+      const firstName = user.first_name || (names.length > 0 ? names[0] : "");
+      const lastName =
+        user.last_name || (names.length > 1 ? names.slice(1).join(" ") : "");
+
+      // Format date to YYYY-MM-DD for date input
+      const dob = user.date_of_birth
+        ? new Date(user.date_of_birth).toISOString().split("T")[0]
+        : "";
+
       setFormData({
-        first_name: user.first_name || "",
-        last_name: user.last_name || "",
-        gender: user.gender || "Male",
-        date_of_birth: user.date_of_birth || "",
+        first_name: firstName,
+        last_name: lastName,
+        gender: user.gender?.toLowerCase() || "male",
+        date_of_birth: dob,
         email: user.email || "",
         phone: user.phone || "",
         address: user.address || "",
@@ -47,12 +57,17 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
 
     try {
       const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== "photo" && value !== null && value !== undefined) {
-          formDataToSend.append(key, value);
-        }
-      });
 
+      // Append all fields except photo first
+      formDataToSend.append("first_name", formData.first_name);
+      formDataToSend.append("last_name", formData.last_name);
+      formDataToSend.append("gender", formData.gender);
+      formDataToSend.append("date_of_birth", formData.date_of_birth);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("address", formData.address);
+
+      // Append photo if it exists and is a File
       if (formData.photo instanceof File) {
         formDataToSend.append("photo", formData.photo);
       }
@@ -109,6 +124,7 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
                   value={formData.first_name}
                   onChange={handleChange}
                   className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                  required
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -119,6 +135,7 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
                   value={formData.last_name}
                   onChange={handleChange}
                   className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                  required
                 />
               </div>
             </div>
@@ -133,9 +150,9 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
                   onChange={handleChange}
                   className="w-full p-2 border border-[#E0E0E0] rounded-md"
                 >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
               <div className="flex flex-col gap-2">
@@ -146,6 +163,7 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
                   value={formData.date_of_birth}
                   onChange={handleChange}
                   className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                  required
                 />
               </div>
             </div>
@@ -183,7 +201,6 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
                 value={formData.address}
                 onChange={handleChange}
                 className="w-full p-2 border border-[#E0E0E0] rounded-md"
-                rows={3}
               />
             </div>
 
