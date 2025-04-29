@@ -69,13 +69,13 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+    <div className="fixed inset-0 flex items-center justify-center">
       <div
         className="flex flex-col bg-white rounded-md shadow-lg max-w-md w-full max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with close button */}
-        <div className="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
+        <div className="flex justify-between items-center p-8 rounded-lg sticky top-0 bg-white z-10">
           <h1 className="text-2xl font-bold">Edit Profile</h1>
           <button
             onClick={onClose}
@@ -86,13 +86,103 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
         </div>
 
         {/* Scrollable content */}
-        <div className="overflow-y-auto p-6">
+        <div className="overflow-y-auto px-8 pb-8 text-sm">
           {error && <p className="text-red-500 mb-4">{error}</p>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block font-bold">First Name</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block font-bold">Last Name</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                />
+              </div>
+            </div>
+
+            {/* Gender and Date of Birth */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block font-bold">Gender</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="block font-bold">Date of Birth</label>
+                <input
+                  type="date"
+                  name="date_of_birth"
+                  value={formData.date_of_birth}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                />
+              </div>
+            </div>
+
+            {/* Email */}
+            <div className="space-y-2">
+              <label className="block font-bold">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border border-[#E0E0E0] rounded-md"
+              />
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-2">
+              <label className="block font-bold">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full p-2 border border-[#E0E0E0] rounded-md"
+              />
+            </div>
+
+            {/* Address */}
+            <div className="space-y-2">
+              <label className="block font-bold">Address</label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="w-full p-2 border border-[#E0E0E0] rounded-md"
+                rows={3}
+              />
+            </div>
+
             {/* Profile Photo */}
             <div className="space-y-2">
-              <label className="block font-medium">Profile Photo</label>
+              <label className="block font-bold">Profile Photo</label>
               <input
                 type="file"
                 name="photo"
@@ -107,101 +197,11 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
               />
             </div>
 
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="block font-medium">First Name</label>
-                <input
-                  type="text"
-                  name="first_name"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="block font-medium">Last Name</label>
-                <input
-                  type="text"
-                  name="last_name"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-            </div>
-
-            {/* Gender and Date of Birth */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="block font-medium">Gender</label>
-                <select
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="block font-medium">Date of Birth</label>
-                <input
-                  type="date"
-                  name="date_of_birth"
-                  value={formData.date_of_birth}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="block font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border rounded-md"
-              />
-            </div>
-
-            {/* Phone */}
-            <div className="space-y-2">
-              <label className="block font-medium">Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-md"
-              />
-            </div>
-
-            {/* Address */}
-            <div className="space-y-2">
-              <label className="block font-medium">Address</label>
-              <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-md"
-                rows={3}
-              />
-            </div>
-
             {/* Buttons */}
-            <div className="flex space-x-4 pt-4">
+            <div className="flex space-x-4">
               <button
                 type="submit"
-                className="flex-1 bg-[#FD5725] text-white py-2 px-4 rounded-md font-medium hover:bg-[#e04a1b] disabled:opacity-50"
+                className="flex-1 bg-[#FD5725] text-white py-2 px-4 rounded-md font-bold hover:bg-[#e04a1b] disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? "Saving..." : "Save Changes"}
@@ -209,7 +209,7 @@ export default function EditProfile({ user, onClose, onUpdateSuccess }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md font-medium hover:bg-gray-300"
+                className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md font-bold hover:bg-gray-300"
                 disabled={loading}
               >
                 Cancel
