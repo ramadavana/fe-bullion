@@ -8,6 +8,7 @@ import { formatDate } from "@/helpers/formateDate";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import ViewProfile from "@/components/Modal/ViewProfile";
+import EditProfile from "@/components/Modal/EditProfile";
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [viewProfile, setViewProfile] = useState(null);
+  const [editProfile, setEditProfile] = useState(null);
   const limit = 10;
 
   const fetchUsers = async (currentPage) => {
@@ -55,12 +57,17 @@ export default function Dashboard() {
     setViewProfile(user);
   };
 
+  const handleEditProfile = (user) => {
+    setEditProfile(user);
+  };
+
   return (
     <main className="flex flex-row gap-4 bg-gray-300 w-full">
       <Sidebar />
-      {viewProfile && (
-        <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
-      )}
+      {viewProfile ||
+        (editProfile && (
+          <div className="bg-black opacity-50 fixed inset-0 h-screen w-screen" />
+        ))}
 
       <div className="flex flex-col gap-4 w-full mr-4">
         <Header />
@@ -106,7 +113,10 @@ export default function Dashboard() {
                           <FaRegEye className="text-2xl" />
                           <span>Lihat</span>
                         </button>
-                        <button className="hover:opacity-75 cursor-pointer flex items-center justify-center gap-2 text-[">
+                        <button
+                          onClick={() => handleEditProfile(user)}
+                          className="hover:opacity-75 cursor-pointer flex items-center justify-center gap-2 text-["
+                        >
                           <FaRegEdit className="text-2xl" />
                           <span>Edit</span>
                         </button>
@@ -156,6 +166,10 @@ export default function Dashboard() {
           userId={viewProfile._id}
           onClose={() => setViewProfile(null)}
         />
+      )}
+
+      {editProfile && (
+        <EditProfile user={editProfile} onClose={() => setEditProfile(null)} />
       )}
     </main>
   );
