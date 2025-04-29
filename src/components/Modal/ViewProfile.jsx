@@ -89,6 +89,11 @@ export default function ViewProfile({ userId, onClose }) {
             </div>
           </div>
         )}
+        <div className="w-full">
+          <button className="w-full bg-[#FD5725] text-white py-2 rounded-lg font-bold">
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -120,7 +120,7 @@ export default function Register() {
       );
 
       if (response.status === 200) {
-        alert(response.data.message);
+        alert(response.data.message) || alert("Pendaftaran berhasil.");
         router.push("/login");
       }
     } catch (error) {

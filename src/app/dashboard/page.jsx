@@ -131,10 +131,10 @@ export default function Dashboard() {
               <button
                 key={pageNumber}
                 onClick={() => setPage(pageNumber)}
-                className={`cursor-pointer w-8 h-8 rounded-lg flex items-center justify-center ${
+                className={`cursor-pointer w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 ${
                   page === pageNumber
                     ? "bg-[#FD5725] text-white"
-                    : "text-[#9E9E9E] hover:text-black"
+                    : "bg-[#E0E0E0] hover:bg-[#FD5725] hover:text-white"
                 }`}
               >
                 {pageNumber}
