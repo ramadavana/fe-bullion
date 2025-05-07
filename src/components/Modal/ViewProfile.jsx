@@ -89,7 +89,10 @@ export default function ViewProfile({ userId, onClose }) {
           </div>
         )}
         <div className="w-full">
-          <button className="w-full border-2 border-[#FD5725] bg-[#FD5725] text-white py-2 rounded-lg font-bold hover:bg-white hover:text-[#FD5725] cursor-pointer transition-all duration-150">
+          <button
+            onClick={onClose}
+            className="w-full border-2 border-[#FD5725] bg-[#FD5725] text-white py-2 rounded-lg font-bold hover:bg-white hover:text-[#FD5725] cursor-pointer transition-all duration-150"
+          >
             Edit
           </button>
         </div>
